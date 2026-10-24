@@ -68,7 +68,7 @@ async function generateLessonAgent(teacherId, courseId, topic, grade, subject) {
     }
 
     // ==========================================================
-    // MASTER PROMPT WITH LATEX COVERAGE TABLE
+    // MASTER PROMPT WITH THE LATEX COVERAGE TABLE
     // ==========================================================
     const prompt = `
       You are a Master Ethiopian Curriculum Teacher and Expert in ${subject} for Grade ${grade}.
@@ -86,8 +86,8 @@ async function generateLessonAgent(teacherId, courseId, topic, grade, subject) {
       4. Include a "callout" linking this specific topic to the broader chapter.
       5. Provide a "videoSearchQuery" for finding a relevant YouTube video.
       
-      CRITICAL LATEX COVERAGE TABLE (Use these exact packages and structures):
-      
+      CRITICAL LATEX COVERAGE TABLE (You MUST follow these rules strictly):
+
       | Subject | LaTeX Coverage Level | Primary Packages | Key Use Cases |
       |---|---|---|---|
       | Mathematics | 100% | amsmath, amssymb, tikz | Algebraic proofs, matrix systems, trigonometric identities, limits, integrals, and vector notation. |
@@ -95,44 +95,34 @@ async function generateLessonAgent(teacherId, courseId, topic, grade, subject) {
       | Chemistry | 85% | mhchem, chemfig, amsmath | Balanced chemical equations, stoichiometry, electron configurations, reaction kinetics, and organic chemical structures. |
       | Biology | 35-40% | mhchem, array, forest, amsmath | Photosynthesis/respiration equations, Punnett squares, Hardy-Weinberg formulas, and phylogenetic tree diagrams. |
 
-      SUBJECT-SPECIFIC FORMATTING RULES:
+      SUBJECT-SPECIFIC FORMATTING RULES (Based on the table above):
 
-      [MATHEMATICS]
-      - Use LaTeX for ALL math.
-      - Inline: $x^2 + y^2 = r^2$
-      - Block: $$\\int_{a}^{b} f(x) dx$$
-      - Fractions: $\\frac{a}{b}$
-      - Matrices: $\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$
-      - Vector notation: $\\vec{v}$, $\\hat{i}$, $\\hat{j}$
+      [MATHEMATICS - 100% Coverage]
+      - Use amsmath for all formulas.
+      - Use amssymb for symbols ($\\mathbb{R}$, $\\mathbb{N}$, $\\subseteq$, $\\cup$, $\\cap$).
+      - Use tikz notation for matrices: $\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$.
+      - Inline math: $\\sin^2\\theta + \\cos^2\\theta = 1$.
+      - Block math: $$\\lim_{x \\to 0} \\frac{\\sin x}{x} = 1$$.
 
-      [PHYSICS]
-      - Formulas must be in LaTeX.
-      - Inline: $F = ma$
-      - Block: $$v = u + at$$
-      - Vectors: $\\vec{F}$
-      - Units: Always use siunitx style: $9.8 \\text{ m/s}^2$, $6.67 \\times 10^{-11} \\text{ N}\\cdot\\text{m}^2/\\text{kg}^2$
-      - Circuit diagrams: Describe with text or use placeholders.
+      [PHYSICS - 90% Coverage]
+      - Use amsmath for equations ($F = ma$, $E_k = \\frac{1}{2}mv^2$).
+      - Use siunitx for units: $9.8 \\text{ m/s}^2$, $6.67 \\times 10^{-11} \\text{ N}\\cdot\\text{m}^2/\\text{kg}^2$.
+      - Use circuitikz for circuit components (describe them in text with placeholders).
 
-      [CHEMISTRY - ADVANCED LATEX RULES]
-      1. ATOMIC & MASS NUMBER: Use ${}^{A}_{Z}\\text{X}$. Example: ${}^{23}_{11}\\text{Na}$
-      2. ORBITAL SHAPES: Describe s, p, d, f orbitals using text and subscripts ($\\text{p}_x, \\text{p}_y, \\text{p}_z$, $\\text{d}_{xy}$, $\\text{d}_{x^2-y^2}$).
-      3. ELECTRON CONFIGURATION: Use superscripts: $1\\text{s}^2 2\\text{s}^2 2\\text{p}^6 3\\text{s}^1$
-      4. CHEMICAL FORMULAS: Use standard subscripts: H₂O, CO₂, H₂SO₄, C₆H₁₂O₆
-      5. CHEMICAL REACTIONS: Use mhchem style: 
-         - Reaction: $\\rightarrow$
-         - Equilibrium: $\\rightleftharpoons$
-         - Gas: $\\uparrow$
-         - Precipitate: $\\downarrow$
-         Example: 2H₂ + O₂ $\\rightarrow$ 2H₂O
-      6. STOICHIOMETRY: $n = \\frac{m}{M}$, $N_A = 6.022 \\times 10^{23} \\text{ mol}^{-1}$
-      7. ORGANIC COMPOUNDS: Use text: CH₃-CH₂-OH (Ethanol)
+      [CHEMISTRY - 85% Coverage]
+      - Use mhchem for balanced equations: 2H₂ + O₂ $\\rightarrow$ 2H₂O.
+      - Use mhchem for equilibrium: N₂ + 3H₂ $\\rightleftharpoons$ 2NH₃.
+      - Use chemfig for organic structures (describe them in text: CH₃-CH₂-OH).
+      - Atomic notation: ${}^{23}_{11}\\text{Na}$.
+      - Stoichiometry: $n = \\frac{m}{M}$, $N_A = 6.022 \\times 10^{23} \\text{ mol}^{-1}$.
+      - Electron configuration: $1\\text{s}^2 2\\text{s}^2 2\\text{p}^6 3\\text{s}^1$.
 
-      [BIOLOGY]
-      - Use mhchem for equations: 6CO₂ + 6H₂O $\\rightarrow$ C₆H₁₂O₆ + 6O₂
-      - Punnett squares: Use Markdown tables (e.g., | | A | a |)
-      - Hardy-Weinberg: $p^2 + 2pq + q^2 = 1$
-      - Scientific names in italic: *Homo sapiens*
-      - Phylogenetic trees: Describe with text or use this image format: ![Figure: Phylogenetic Tree](https://picsum.photos/800/400?random=1)
+      [BIOLOGY - 35-40% Coverage]
+      - Use mhchem for photosynthesis: 6CO₂ + 6H₂O $\\rightarrow$ C₆H₁₂O₆ + 6O₂.
+      - Use array for Punnett squares: Use Markdown tables (e.g., | | A | a |).
+      - Hardy-Weinberg: $p^2 + 2pq + q^2 = 1$.
+      - Use forest for phylogenetic trees (describe them in text).
+      - Scientific names in italic: *Homo sapiens*.
 
       [ALL SUBJECTS]
       - ALWAYS include at least one Markdown table comparing concepts.
