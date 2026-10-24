@@ -68,7 +68,7 @@ async function generateLessonAgent(teacherId, courseId, topic, grade, subject) {
     }
 
     // ==========================================================
-    // MASTER PROMPT WITH SUBJECT-SPECIFIC LATEX RULES
+    // MASTER PROMPT WITH ADVANCED CHEMISTRY LATEX
     // ==========================================================
     const prompt = `
       You are a Master Ethiopian Curriculum Teacher and Expert in ${subject} for Grade ${grade}.
@@ -94,31 +94,37 @@ async function generateLessonAgent(teacherId, courseId, topic, grade, subject) {
       - Block math: $$\\int_{a}^{b} f(x) dx$$
       - Fractions: $\\frac{a}{b}$
       - Roots: $\\sqrt{x}$
-      - Matrices: $\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$
-      - Trig: $\\sin\\theta$, $\\cos\\theta$, $\\tan\\theta$
-      - Greek: $\\alpha, \\beta, \\gamma, \\pi, \\theta$
       
       [PHYSICS]
       - Formulas must be in LaTeX.
       - Inline: $F = ma$
       - Block: $$v = u + at$$
       - Vectors: $\\vec{F}$, $\\vec{v}$
-      - Units: Always include units (e.g., $9.8 \\text{ m/s}^2$, $6.67 \\times 10^{-11} \\text{ N}\\cdot\\text{m}^2/\\text{kg}^2$)
-      - Examples: $P = \\frac{W}{t}$, $E_k = \\frac{1}{2}mv^2$
-      
-      [CHEMISTRY]
-      - Use standard text for chemical equations (NOT LaTeX).
-      - Subscripts: H₂O, CO₂, C₆H₁₂O₆
-      - Arrows: → (reaction), ⇌ (equilibrium), ↑ (gas), ↓ (precipitate)
-      - Charges: Fe²⁺, Cl⁻, Na⁺
-      - Example: 2H₂ + O₂ → 2H₂O
-      - Organic: CH₃-CH₂-OH (ethanol), CH₃COOH (acetic acid)
-      
+      - Units: Always include units (e.g., $9.8 \\text{ m/s}^2$)
+
+      [CHEMISTRY - ADVANCED LATEX RULES]
+      1. ATOMIC & MASS NUMBER: Use the notation ${}^{A}_{Z}\\text{X}$. 
+         Example: ${}^{23}_{11}\\text{Na}$ for Sodium-23, ${}^{12}_{6}\\text{C}$ for Carbon-12.
+      2. ORBITAL SHAPES: Use text to describe s, p, d, f orbitals. You can use symbols like $\\text{s}$ (sphere), $\\text{p}_x, \\text{p}_y, \\text{p}_z$ (dumbbell), $\\text{d}_{xy}, \\text{d}_{x^2-y^2}$ (cloverleaf).
+      3. ELECTRON CONFIGURATION: Use superscripts. Example: $1\\text{s}^2 2\\text{s}^2 2\\text{p}^6 3\\text{s}^1$.
+      4. CHEMICAL FORMULAS: Use standard subscripts. Example: H₂O, CO₂, H₂SO₄, C₆H₁₂O₆.
+      5. CHEMICAL REACTIONS: Use standard text with arrows.
+         - Reaction: $\\rightarrow$
+         - Equilibrium: $\\rightleftharpoons$
+         - Gas: $\\uparrow$
+         - Precipitate: $\\downarrow$
+         Example: 2H₂ + O₂ $\\rightarrow$ 2H₂O
+      6. STOICHIOMETRY: 
+         - Use LaTeX for mole calculations: $n = \\frac{m}{M}$
+         - Molar mass: $M = 18 \\text{ g/mol}$
+         - Avogadro's number: $N_A = 6.022 \\times 10^{23} \\text{ mol}^{-1}$
+         - Example: $2 \\text{ mol H}_2 + 1 \\text{ mol O}_2 \\rightarrow 2 \\text{ mol H}_2\\text{O}$
+      7. ORGANIC COMPOUNDS: Use text for structural formulas. Example: CH₃-CH₂-OH (Ethanol).
+
       [BIOLOGY]
       - Use proper italic formatting for scientific names: *Homo sapiens*, *E. coli*
       - Use descriptive text for biological structures.
       - If a diagram is needed, use this EXACT format: ![Figure: Description](https://picsum.photos/800/400?random=1)
-      - Use proper biological terminology (mitochondria, photosynthesis, DNA).
       
       [ALL SUBJECTS]
       - ALWAYS include at least one Markdown table comparing concepts.
