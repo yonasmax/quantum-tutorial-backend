@@ -68,7 +68,7 @@ async function generateLessonAgent(teacherId, courseId, topic, grade, subject) {
     }
 
     // ==========================================================
-    // MASTER PROMPT WITH ADVANCED CHEMISTRY LATEX
+    // MASTER PROMPT WITH LATEX COVERAGE TABLE
     // ==========================================================
     const prompt = `
       You are a Master Ethiopian Curriculum Teacher and Expert in ${subject} for Grade ${grade}.
@@ -86,46 +86,54 @@ async function generateLessonAgent(teacherId, courseId, topic, grade, subject) {
       4. Include a "callout" linking this specific topic to the broader chapter.
       5. Provide a "videoSearchQuery" for finding a relevant YouTube video.
       
-      CRITICAL INSTRUCTIONS FOR SUBJECT-SPECIFIC FORMATTING (LATEX):
+      CRITICAL LATEX COVERAGE TABLE (Use these exact packages and structures):
+      
+      | Subject | LaTeX Coverage Level | Primary Packages | Key Use Cases |
+      |---|---|---|---|
+      | Mathematics | 100% | amsmath, amssymb, tikz | Algebraic proofs, matrix systems, trigonometric identities, limits, integrals, and vector notation. |
+      | Physics | 90% | amsmath, siunitx, circuitikz | Motion equations, force vectors, thermodynamics, circuit diagrams, electromagnetic wave equations, and nuclear decay. |
+      | Chemistry | 85% | mhchem, chemfig, amsmath | Balanced chemical equations, stoichiometry, electron configurations, reaction kinetics, and organic chemical structures. |
+      | Biology | 35-40% | mhchem, array, forest, amsmath | Photosynthesis/respiration equations, Punnett squares, Hardy-Weinberg formulas, and phylogenetic tree diagrams. |
+
+      SUBJECT-SPECIFIC FORMATTING RULES:
 
       [MATHEMATICS]
-      - All math must be in LaTeX.
-      - Inline math: $x^2 + y^2 = r^2$
-      - Block math: $$\\int_{a}^{b} f(x) dx$$
+      - Use LaTeX for ALL math.
+      - Inline: $x^2 + y^2 = r^2$
+      - Block: $$\\int_{a}^{b} f(x) dx$$
       - Fractions: $\\frac{a}{b}$
-      - Roots: $\\sqrt{x}$
-      
+      - Matrices: $\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$
+      - Vector notation: $\\vec{v}$, $\\hat{i}$, $\\hat{j}$
+
       [PHYSICS]
       - Formulas must be in LaTeX.
       - Inline: $F = ma$
       - Block: $$v = u + at$$
-      - Vectors: $\\vec{F}$, $\\vec{v}$
-      - Units: Always include units (e.g., $9.8 \\text{ m/s}^2$)
+      - Vectors: $\\vec{F}$
+      - Units: Always use siunitx style: $9.8 \\text{ m/s}^2$, $6.67 \\times 10^{-11} \\text{ N}\\cdot\\text{m}^2/\\text{kg}^2$
+      - Circuit diagrams: Describe with text or use placeholders.
 
       [CHEMISTRY - ADVANCED LATEX RULES]
-      1. ATOMIC & MASS NUMBER: Use the notation ${}^{A}_{Z}\\text{X}$. 
-         Example: ${}^{23}_{11}\\text{Na}$ for Sodium-23, ${}^{12}_{6}\\text{C}$ for Carbon-12.
-      2. ORBITAL SHAPES: Use text to describe s, p, d, f orbitals. You can use symbols like $\\text{s}$ (sphere), $\\text{p}_x, \\text{p}_y, \\text{p}_z$ (dumbbell), $\\text{d}_{xy}, \\text{d}_{x^2-y^2}$ (cloverleaf).
-      3. ELECTRON CONFIGURATION: Use superscripts. Example: $1\\text{s}^2 2\\text{s}^2 2\\text{p}^6 3\\text{s}^1$.
-      4. CHEMICAL FORMULAS: Use standard subscripts. Example: H₂O, CO₂, H₂SO₄, C₆H₁₂O₆.
-      5. CHEMICAL REACTIONS: Use standard text with arrows.
+      1. ATOMIC & MASS NUMBER: Use ${}^{A}_{Z}\\text{X}$. Example: ${}^{23}_{11}\\text{Na}$
+      2. ORBITAL SHAPES: Describe s, p, d, f orbitals using text and subscripts ($\\text{p}_x, \\text{p}_y, \\text{p}_z$, $\\text{d}_{xy}$, $\\text{d}_{x^2-y^2}$).
+      3. ELECTRON CONFIGURATION: Use superscripts: $1\\text{s}^2 2\\text{s}^2 2\\text{p}^6 3\\text{s}^1$
+      4. CHEMICAL FORMULAS: Use standard subscripts: H₂O, CO₂, H₂SO₄, C₆H₁₂O₆
+      5. CHEMICAL REACTIONS: Use mhchem style: 
          - Reaction: $\\rightarrow$
          - Equilibrium: $\\rightleftharpoons$
          - Gas: $\\uparrow$
          - Precipitate: $\\downarrow$
          Example: 2H₂ + O₂ $\\rightarrow$ 2H₂O
-      6. STOICHIOMETRY: 
-         - Use LaTeX for mole calculations: $n = \\frac{m}{M}$
-         - Molar mass: $M = 18 \\text{ g/mol}$
-         - Avogadro's number: $N_A = 6.022 \\times 10^{23} \\text{ mol}^{-1}$
-         - Example: $2 \\text{ mol H}_2 + 1 \\text{ mol O}_2 \\rightarrow 2 \\text{ mol H}_2\\text{O}$
-      7. ORGANIC COMPOUNDS: Use text for structural formulas. Example: CH₃-CH₂-OH (Ethanol).
+      6. STOICHIOMETRY: $n = \\frac{m}{M}$, $N_A = 6.022 \\times 10^{23} \\text{ mol}^{-1}$
+      7. ORGANIC COMPOUNDS: Use text: CH₃-CH₂-OH (Ethanol)
 
       [BIOLOGY]
-      - Use proper italic formatting for scientific names: *Homo sapiens*, *E. coli*
-      - Use descriptive text for biological structures.
-      - If a diagram is needed, use this EXACT format: ![Figure: Description](https://picsum.photos/800/400?random=1)
-      
+      - Use mhchem for equations: 6CO₂ + 6H₂O $\\rightarrow$ C₆H₁₂O₆ + 6O₂
+      - Punnett squares: Use Markdown tables (e.g., | | A | a |)
+      - Hardy-Weinberg: $p^2 + 2pq + q^2 = 1$
+      - Scientific names in italic: *Homo sapiens*
+      - Phylogenetic trees: Describe with text or use this image format: ![Figure: Phylogenetic Tree](https://picsum.photos/800/400?random=1)
+
       [ALL SUBJECTS]
       - ALWAYS include at least one Markdown table comparing concepts.
       - Generate EXACTLY 5 quiz questions. The correctAnswer MUST be the exact string of the correct option.
